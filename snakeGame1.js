@@ -152,19 +152,19 @@ function gameOver() {
         ctx.fillText("Game Over!!!", canvas.clientWidth - 500, 300);
         gameOverSound.play();
 
-         
-        const parentButton=document.querySelector('#reset-div');
 
-        let reset=document.createElement('button');
-        reset.innerText="Reset"
-        reset.addEventListener('click',function(){
+        const parentButton = document.querySelector('#reset-div');
+
+        let reset = document.createElement('button');
+        reset.innerText = "Reset"
+        reset.addEventListener('click', function () {
             location.reload();
         })
-        reset.style.width='80px';
-        reset.style.height='30px';
-        reset.style.borderRadius="6px";
-        reset.style.background="red";
-        reset.style.color="white";
+        reset.style.width = '80px';
+        reset.style.height = '30px';
+        reset.style.borderRadius = "6px";
+        reset.style.background = "red";
+        reset.style.color = "white";
         parentButton.appendChild(reset);
     }
 
