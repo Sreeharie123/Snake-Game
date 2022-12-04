@@ -3,20 +3,36 @@ const canvas = document.querySelector('#game');
 //getContext method method returns a drawing context on the canvas
 const ctx = canvas.getContext("2d");
 
-let speed = 7;// Speed of the snake movement
-let tileCount = 30;//x y axis grid
-let tileSize = canvas.clientWidth / tileCount-2 //size of the object
-let headX = 10;// starting X position of the snake
-let headY = 10;// starting Y position of the snake
+class snakePart{
+    constructor(x,y){
+        this.x=x;
+        this.y=y;
 
-let xMove=0;
-let yMove=0;
+    }
+}
+
+let speed = 10;// Speed of the snake movement
+let tileCount = 20;//x y axis grid
+let tileSize = canvas.clientWidth / tileCount - 10 //size of the object
+let headX = 15;// starting X position of the snake
+let headY = 15;// starting Y position of the snake
+
+let snakeParts=[];
+let tailLength=2;//lenght of the snake
+
+let appleX = 5;
+let appleY = 5;
+
+let xMove = 0;
+let yMove = 0;
 
 // Use the game loop for continusly update the Screen (requestAnimationFrame/setTimeOut)
 
 function drawGame() {
     clearScreen();
     snakePosition();
+    appleCollision()
+    drawApple();
     drawSnake();
     setTimeout(drawGame, 1000 / speed)
 }
@@ -28,42 +44,69 @@ function clearScreen() {
 
 function drawSnake() {
     ctx.fillStyle = 'green';
-    ctx.fillRect(headX*tileCount,headY*tileCount,tileSize,tileSize)
+    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize)
+
+    ctx.fillStyle = 'orange';
+
+    for(let i=0;i<snakeParts.length;i++){
+        let part=snakeParts[i];
+        ctx.fillRect(part.x*tileCount,part.y*tileCount,tileSize,tileSize)
+    }
+    snakeParts.push(new snakePart(headX,headY))//add the item in the last
+
+    if(snakeParts.length>tailLength){
+        snakeParts.shift();//remove the item in the first
+    }
+  
+
 }
 
-function snakePosition(){
-    headX=headX+xMove;
-    headY=headY+yMove
+function snakePosition() {
+    headX = headX + xMove;
+    headY = headY + yMove
 }
 
+// generate random apples
+function drawApple() {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize)
+}
 
-document.body.addEventListener('keydown',keyDown);// keybord events
+function appleCollision() {
+    if (appleX === headX && appleY === headY) {
+       appleX=Math.floor(Math.random()*tileCount);
+       appleY=Math.floor(Math.random()*tileCount);
+       tailLength++;
+    }
+}
 
-function keyDown(event){
+document.body.addEventListener('keydown', keyDown);// keybord events
+
+function keyDown(event) {
     //keyCode 38 is Arrow Up
-    if(event.keyCode==38){
-        if(yMove==1)return //snake move only forward
-        yMove=-1;
-        xMove=0;
+    if (event.keyCode == 38) {
+        if (yMove == 1) return //snake move only forward
+        yMove = -1;
+        xMove = 0;
     }
     // keyCode 40 is Arrow down
-    if(event.keyCode==40){
-        if(yMove==-1)return
-        yMove=1;
-        xMove=0;
+    if (event.keyCode == 40) {
+        if (yMove == -1) return
+        yMove = 1;
+        xMove = 0;
     }
-   // keyCode 39 is Left Arrow
-   if(event.keyCode==39){
-    if(xMove==-1)return
-    yMove=0;
-    xMove=1;
-}
-  //keyCode 37 is right Arrow
-  if(event.keyCode==37){
-    if(xMove==1)return
-    yMove=0;
-    xMove=-1;
-}
+    // keyCode 39 is Left Arrow
+    if (event.keyCode == 39) {
+        if (xMove == -1) return
+        yMove = 0;
+        xMove = 1;
+    }
+    //keyCode 37 is right Arrow
+    if (event.keyCode == 37) {
+        if (xMove == 1) return
+        yMove = 0;
+        xMove = -1;
+    }
 
 }
 
