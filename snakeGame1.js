@@ -3,22 +3,21 @@ const canvas = document.querySelector('#game');
 //getContext method method returns a drawing context on the canvas
 const ctx = canvas.getContext("2d");
 
-class snakePart{
-    constructor(x,y){
-        this.x=x;
-        this.y=y;
-
+//class
+class snakePart {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
     }
 }
-
-let speed = 10;// Speed of the snake movement
+let speed = 7;// Speed of the snake movement
 let tileCount = 20;//x y axis grid
 let tileSize = canvas.clientWidth / tileCount - 10 //size of the object
 let headX = 15;// starting X position of the snake
 let headY = 15;// starting Y position of the snake
 
-let snakeParts=[];
-let tailLength=2;//lenght of the snake
+let snakeParts = [];
+let tailLength = 3;//lenght of the snake
 
 let appleX = 5;
 let appleY = 5;
@@ -26,15 +25,30 @@ let appleY = 5;
 let xMove = 0;
 let yMove = 0;
 
+let score = 0;
+
 // Use the game loop for continusly update the Screen (requestAnimationFrame/setTimeOut)
 
 function drawGame() {
-    clearScreen();
+
     snakePosition();
+
+   let result=gameOver();
+   if(result) return;
+
+    clearScreen();
+   
     appleCollision()
     drawApple();
     drawSnake();
+    gameScore();
     setTimeout(drawGame, 1000 / speed)
+}
+
+function gameScore() {
+    ctx.fillStyle = "red";
+    ctx.font = "25px verdana"
+    ctx.fillText("Score-" + score, canvas.clientWidth - 90, 25)
 }
 
 function clearScreen() {
@@ -43,21 +57,19 @@ function clearScreen() {
 }
 
 function drawSnake() {
+
     ctx.fillStyle = 'green';
-    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize)
-
-    ctx.fillStyle = 'orange';
-
-    for(let i=0;i<snakeParts.length;i++){
-        let part=snakeParts[i];
-        ctx.fillRect(part.x*tileCount,part.y*tileCount,tileSize,tileSize)
+    for (let i = 0; i < snakeParts.length; i++) {
+        let part = snakeParts[i];
+        ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize)
     }
-    snakeParts.push(new snakePart(headX,headY))//add the item in the last
+    snakeParts.push(new snakePart(headX, headY))//add the item in the last
 
-    if(snakeParts.length>tailLength){
+    while (snakeParts.length > tailLength) {
         snakeParts.shift();//remove the item in the first
     }
-  
+    ctx.fillStyle = 'orange';
+    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize)
 
 }
 
@@ -74,10 +86,40 @@ function drawApple() {
 
 function appleCollision() {
     if (appleX === headX && appleY === headY) {
-       appleX=Math.floor(Math.random()*tileCount);
-       appleY=Math.floor(Math.random()*tileCount);
-       tailLength++;
+        appleX = Math.floor(Math.random() * tileCount);
+        appleY = Math.floor(Math.random() * tileCount);
+        tailLength++;
+        score++;
     }
+}
+
+function gameOver(){
+    let Gameover=false;
+
+    if(headX<0){
+        Gameover=true;
+    }
+    if(headY<0){
+        Gameover=true;
+    }
+    if(headX>29){
+        Gameover=true;
+    }
+    if(headY>29){
+        Gameover=true;
+    }
+
+    if(Gameover){
+        // const heading=document.createElement('h1')
+        // heading.innerHTML="GAME OVER"
+        // heading.style.color="red"
+        // document.body.appendChild(heading);
+        ctx.fillStyle = "white";
+        ctx.font = "80px verdana"
+        ctx.fillText("Game Over!!!" , canvas.clientWidth-500,300);
+    }
+
+    return Gameover;
 }
 
 document.body.addEventListener('keydown', keyDown);// keybord events
