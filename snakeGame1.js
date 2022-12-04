@@ -27,6 +27,9 @@ let yMove = 0;
 
 let score = 0;
 
+const scoreSound = new Audio("./mixkit-unlock-game-notification-253.wav")
+const gameOverSound = new Audio("./videogame-death-sound-43894.mp3");
+
 // Use the game loop for continusly update the Screen (requestAnimationFrame/setTimeOut)
 
 function drawGame() {
@@ -35,13 +38,25 @@ function drawGame() {
 
     let result = gameOver();
     if (result) return;
-
     clearScreen();
-
-    appleCollision()
+    appleCollision();
     drawApple();
     drawSnake();
     gameScore();
+    if (score > 2) {
+        speed = 8;
+    }
+
+    if (score > 5) {
+        speed = 10;
+    }
+    if (score > 15) {
+        speed = 20;
+    }
+    if (score > 25) {
+        speed == 25;
+    }
+
     setTimeout(drawGame, 1000 / speed)
 }
 
@@ -90,13 +105,14 @@ function appleCollision() {
         appleY = Math.floor(Math.random() * tileCount);
         tailLength++;
         score++;
+        scoreSound.play();
     }
 }
 
 function gameOver() {
     let Gameover = false;
-    
-    if(xMove===0&&yMove===0)return false
+
+    if (xMove === 0 && yMove === 0) return false
 
     if (headX < 0) {
         Gameover = true;
@@ -134,6 +150,22 @@ function gameOver() {
         gradient.addColorStop("1.0", "red")
         ctx.fillStyle = gradient;
         ctx.fillText("Game Over!!!", canvas.clientWidth - 500, 300);
+        gameOverSound.play();
+
+         
+        const parentButton=document.querySelector('#reset-div');
+
+        let reset=document.createElement('button');
+        reset.innerText="Reset"
+        reset.addEventListener('click',function(){
+            location.reload();
+        })
+        reset.style.width='80px';
+        reset.style.height='30px';
+        reset.style.borderRadius="6px";
+        reset.style.background="red";
+        reset.style.color="white";
+        parentButton.appendChild(reset);
     }
 
     return Gameover;
