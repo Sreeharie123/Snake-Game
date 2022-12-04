@@ -33,11 +33,11 @@ function drawGame() {
 
     snakePosition();
 
-   let result=gameOver();
-   if(result) return;
+    let result = gameOver();
+    if (result) return;
 
     clearScreen();
-   
+
     appleCollision()
     drawApple();
     drawSnake();
@@ -93,30 +93,47 @@ function appleCollision() {
     }
 }
 
-function gameOver(){
-    let Gameover=false;
+function gameOver() {
+    let Gameover = false;
+    
+    if(xMove===0&&yMove===0)return false
 
-    if(headX<0){
-        Gameover=true;
+    if (headX < 0) {
+        Gameover = true;
     }
-    if(headY<0){
-        Gameover=true;
+    else if (headY < 0) {
+        Gameover = true;
     }
-    if(headX>29){
-        Gameover=true;
+    else if (headX > 29) {
+        Gameover = true;
     }
-    if(headY>29){
-        Gameover=true;
+    else if (headY > 29) {
+        Gameover = true;
     }
 
-    if(Gameover){
+    for (let i = 0; i < snakeParts.length; i++) {
+
+        let part = snakeParts[i];
+        if (part.x === headX && part.y === headY) {
+            Gameover = true;
+            break;
+        }
+    }
+
+    if (Gameover) {
         // const heading=document.createElement('h1')
         // heading.innerHTML="GAME OVER"
         // heading.style.color="red"
         // document.body.appendChild(heading);
         ctx.fillStyle = "white";
         ctx.font = "80px verdana"
-        ctx.fillText("Game Over!!!" , canvas.clientWidth-500,300);
+
+        let gradient = ctx.createLinearGradient(0, 0, canvas.clientWidth, 0);;
+        gradient.addColorStop("0", "magenta")
+        gradient.addColorStop("0.5", "blue")
+        gradient.addColorStop("1.0", "red")
+        ctx.fillStyle = gradient;
+        ctx.fillText("Game Over!!!", canvas.clientWidth - 500, 300);
     }
 
     return Gameover;
