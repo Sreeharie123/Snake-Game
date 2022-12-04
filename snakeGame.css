@@ -1,0 +1,28 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+    background-image: url(./zldaLS.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+#head{
+    position:absolute;
+    top: 80px;
+    right: 45%;
+}
+#game{
+    width: 600px;
+    height: 600px;
+    background:rgba(0, 0, 0, 0.996);
+    position:absolute;
+    top: calc(50% - 300px);
+    left:calc(50% - 300px);
+    border-radius: 24px;
+    box-shadow: 10px 10px 50px rgb(9, 9, 9) ;
+}
