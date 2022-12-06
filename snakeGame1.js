@@ -10,6 +10,7 @@ class snakePart {
         this.y = y;
     }
 }
+
 let speed = 7;// Speed of the snake movement
 let tileCount = 20;//x y axis grid
 let tileSize = canvas.clientWidth / tileCount - 10 //size of the object
@@ -63,7 +64,7 @@ function drawGame() {
 function gameScore() {
     ctx.fillStyle = "red";
     ctx.font = "25px verdana"
-    ctx.fillText("Score-" + score, canvas.clientWidth - 90, 25)
+    ctx.fillText("Score-" + score, canvas.clientWidth - 100, 25)
 }
 
 function clearScreen() {
@@ -141,15 +142,17 @@ function gameOver() {
         // heading.innerHTML="GAME OVER"
         // heading.style.color="red"
         // document.body.appendChild(heading);
-        ctx.fillStyle = "white";
-        ctx.font = "80px verdana"
+        // ctx.fillStyle = "white";
 
-        let gradient = ctx.createLinearGradient(0, 0, canvas.clientWidth, 0);;
+        ctx.font = "80px verdana";
+        let gradient = ctx.createLinearGradient(0, 0, canvas.clientWidth, 0);
         gradient.addColorStop("0", "magenta")
         gradient.addColorStop("0.5", "blue")
         gradient.addColorStop("1.0", "red")
         ctx.fillStyle = gradient;
         ctx.fillText("Game Over!!!", canvas.clientWidth - 500, 300);
+        ctx.fillText("Score-" + score, canvas.clientWidth - 400, 450)
+        
         gameOverSound.play();
 
 

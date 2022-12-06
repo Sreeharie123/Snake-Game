@@ -19,7 +19,7 @@ body {
 
 #head {
     position: absolute;
-    top: 15px;
+    top: 5%;
     right: 45%;
 }
 
@@ -39,7 +39,7 @@ canvas {
     height: 30px;
     position: absolute;
     top: 55%;
-    font-size: 30px;
+    font-size: 30rem;
     display: flex;
     justify-content: center;
     align-items: center;
